@@ -1,0 +1,1 @@
+export 'package:flutter_crud/models/producto.dart';

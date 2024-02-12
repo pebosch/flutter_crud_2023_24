@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_crud/ui/input_decorations.dart';
+
 
 class ProductScreen extends StatelessWidget {
    
@@ -11,10 +13,17 @@ class ProductScreen extends StatelessWidget {
         child: Column(
           children: [
             _ProductStack(),
-            _ProductForm()
+            _ProductForm(),
           ],
         ),
-      )
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        child: Icon ( Icons.save_outlined),
+        onPressed: () {
+          
+        },
+      ),
     );
   }
 }
@@ -26,14 +35,54 @@ class _ProductForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        width: double.infinity,
+        //height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              offset: Offset(0,5),
+              blurRadius: 5
+            )
+          ]
+        ),
+        child: Form(
+          child: Column(
+            children: [
+              SizedBox( height: 10),
+              TextFormField(
+                decoration: InputDecorations.authInputDecoration(
+                  hintText: 'Nombre del producto',
+                  labelText: 'Nombre: ',
+                ),
+              ),
+              SizedBox( height: 30),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecorations.authInputDecoration(
+                  hintText: '150€',
+                  labelText: 'Precio: ',
+                ),
+              ),
+              SizedBox( height: 30),
+              SwitchListTile.adaptive(
+                value: true, 
+                title: Text('Disponible'),
+                activeColor: Colors.indigo,
+                onChanged: (value) {
+                }
+              ),
+              SizedBox( height: 30),
+            ],
+          )
+          ),
       ),
-
     );
   }
 }
