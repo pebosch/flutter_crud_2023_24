@@ -14,11 +14,11 @@ class Producto {
         required this.precio,
     });
 
-    factory Producto.fromRawJson(String str) => Producto.fromJson(json.decode(str));
+    factory Producto.fromRawJson(String str) => Producto.fromMap(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
-    factory Producto.fromJson(Map<String, dynamic> json) => Producto(
+    factory Producto.fromMap(Map<String, dynamic> json) => Producto(
         disponible: json["disponible"],
         imagen: json["imagen"],
         nombre: json["nombre"],

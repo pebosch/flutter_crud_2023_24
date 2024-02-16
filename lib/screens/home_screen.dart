@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_crud/services/productos_services.dart';
-import 'package:flutter_crud/services/productos_services.dart';
 import 'package:flutter_crud/widgets/widgets.dart';
+import 'package:flutter_crud/services/services.dart';
 import 'package:provider/provider.dart';
-
 
 class HomeScreen extends StatelessWidget {
 
