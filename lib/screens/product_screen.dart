@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_crud/providers/producto_form_provider.dart';
+import 'package:flutter_crud/services/productos_services.dart';
 import 'package:flutter_crud/ui/input_decorations.dart';
+import 'package:provider/provider.dart';
 
 
 class ProductScreen extends StatelessWidget {
@@ -8,16 +12,36 @@ class ProductScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
+    final productService = Provider.of<ProductosServices>(context);
+
+    return ChangeNotifierProvider(
+      create: (context) => ProductoFormProvider( productService.productoSeleccionado),
+      child: _ProductScreenBody(productService: productService),
+    );
+  }
+}
+
+class _ProductScreenBody extends StatelessWidget {
+  const _ProductScreenBody({
+    super.key,
+    required this.productService,
+  });
+
+  final ProductosServices productService;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _ProductStack(),
+            _ProductStack( url: productService.productoSeleccionado?.imagen ),
             _ProductForm(),
           ],
         ),
       ),
-
+    
       floatingActionButton: FloatingActionButton(
         child: Icon ( Icons.save_outlined),
         onPressed: () {
@@ -35,6 +59,10 @@ class _ProductForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final productForm = Provider.of<ProductoFormProvider>(context);
+    final producto = productForm.producto;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -57,6 +85,12 @@ class _ProductForm extends StatelessWidget {
             children: [
               SizedBox( height: 10),
               TextFormField(
+                initialValue: producto?.nombre,
+                onChanged: (value) => producto?.nombre = value,
+                validator: (value) {
+                  if ( value == null || value.length < 1 )
+                    return 'El nombre es obligatorio';
+                },
                 decoration: InputDecorations.authInputDecoration(
                   hintText: 'Nombre del producto',
                   labelText: 'Nombre: ',
@@ -64,6 +98,17 @@ class _ProductForm extends StatelessWidget {
               ),
               SizedBox( height: 30),
               TextFormField(
+                initialValue: '${producto?.precio}',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                ],
+                onChanged: (value) {
+                  if( double.tryParse(value) == null) {
+                    producto?.precio = 0;
+                  } else {
+                    producto!.precio = double.parse(value);
+                  }
+                },
                 keyboardType: TextInputType.number,
                 decoration: InputDecorations.authInputDecoration(
                   hintText: '150€',
@@ -72,11 +117,10 @@ class _ProductForm extends StatelessWidget {
               ),
               SizedBox( height: 30),
               SwitchListTile.adaptive(
-                value: true, 
+                value: producto!.disponible, 
                 title: Text('Disponible'),
                 activeColor: Colors.indigo,
-                onChanged: (value) {
-                }
+                onChanged: productForm.updateAvailability
               ),
               SizedBox( height: 30),
             ],
@@ -88,8 +132,11 @@ class _ProductForm extends StatelessWidget {
 }
 
 class _ProductStack extends StatelessWidget {
+
+  final String? url;
+
   const _ProductStack({
-    super.key,
+    super.key, this.url,
   });
 
   @override
@@ -114,9 +161,14 @@ class _ProductStack extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(45), topRight: Radius.circular(45)),
-            child: FadeInImage(
+            child: this.url == null
+            ? Image(
+              image: AssetImage('assets/no-image.jpg'),
+              fit: BoxFit.cover,
+            ) 
+          : FadeInImage(
+              image: NetworkImage(this.url!),
               placeholder: AssetImage('assets/jar-loading.gif'),
-              image: NetworkImage('https://via.placeholder.com/400x300'),
               fit: BoxFit.cover,
             ),
           ),

@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 class ProductosServices extends ChangeNotifier{
   final String _baseURL = 'fl-productos2023-24-default-rtdb.europe-west1.firebasedatabase.app';
   final List<Producto> producto = [];
+  Producto? productoSeleccionado;
+  
   bool isLoading = true;
 
   ProductosServices(){

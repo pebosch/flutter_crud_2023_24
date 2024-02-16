@@ -11,7 +11,8 @@ class Producto {
         required this.disponible,
         this.imagen,
         required this.nombre,
-        required this.precio,
+        required this.precio, 
+        String? id,
     });
 
     factory Producto.fromRawJson(String str) => Producto.fromMap(json.decode(str));
@@ -31,4 +32,12 @@ class Producto {
         "nombre": nombre,
         "precio": precio,
     };
+
+    Producto copy() => Producto(
+      disponible: disponible, 
+      nombre: nombre, 
+      precio: precio,
+      id: id,  
+    );
+
 }
