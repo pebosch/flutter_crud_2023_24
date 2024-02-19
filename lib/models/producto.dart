@@ -12,12 +12,14 @@ class Producto {
         this.imagen,
         required this.nombre,
         required this.precio, 
-        String? id,
+        this.id,
     });
 
-    factory Producto.fromRawJson(String str) => Producto.fromMap(json.decode(str));
+    //factory Producto.fromRawJson(String str) => Producto.fromMap(json.decode(str));
+    factory Producto.fromJson(String str) => Producto.fromMap(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+    //String toRawJson() => json.encode(toJson());
+    String toJson() => json.encode(toMap());
 
     factory Producto.fromMap(Map<String, dynamic> json) => Producto(
         disponible: json["disponible"],
@@ -26,7 +28,7 @@ class Producto {
         precio: json["precio"]?.toDouble(),
     );
 
-    Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toMap() => {
         "disponible": disponible,
         "imagen": imagen,
         "nombre": nombre,
@@ -34,10 +36,11 @@ class Producto {
     };
 
     Producto copy() => Producto(
-      disponible: disponible, 
-      nombre: nombre, 
-      precio: precio,
-      id: id,  
+      disponible: this.disponible, 
+      imagen: this.imagen,
+      nombre: this.nombre, 
+      precio: this.precio,
+      id: this.id,  
     );
 
 }
