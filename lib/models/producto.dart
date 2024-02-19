@@ -37,7 +37,7 @@ class Producto {
 
     Producto copy() => Producto(
       disponible: this.disponible, 
-      imagen: this.imagen,
+      imagen: this.imagen, // Incluimos la imagen en el copy
       nombre: this.nombre, 
       precio: this.precio,
       id: this.id,  
