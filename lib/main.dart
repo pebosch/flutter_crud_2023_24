@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crud/screens/screens.dart';
 import 'package:flutter_crud/services/productos_services.dart';
 import 'package:provider/provider.dart';
+
+import 'services/services.dart';
  
 void main() => runApp(AppState());
  
@@ -11,9 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Productos App',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: {
         'login': ( _ ) => LoginScreen(),
+        'register' : ( _ ) => RegisterScreen(),
         'home' : ( _ ) => HomeScreen(),
         'product' : ( _ ) => ProductScreen(),
       },
@@ -38,6 +41,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => ProductosServices())
       ],
       child: MyApp(),

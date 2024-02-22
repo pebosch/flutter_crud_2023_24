@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crud/providers/login_form_provider.dart';
 import 'package:flutter_crud/services/services.dart';
 import 'package:provider/provider.dart';
-
 import 'package:flutter_crud/ui/input_decorations.dart';
 import 'package:flutter_crud/widgets/widgets.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
 
                     SizedBox( height: 10 ),
-                    Text('Login', style: Theme.of(context).textTheme.headline4 ),
+                    Text('Regístrate', style: Theme.of(context).textTheme.headline4 ),
                     SizedBox( height: 30 ),
                     
                     ChangeNotifierProvider(
@@ -38,12 +38,12 @@ class LoginScreen extends StatelessWidget {
 
               SizedBox( height: 50 ),
               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'register'), 
+                onPressed: () => Navigator.pushReplacementNamed(context, 'login'), 
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder())
                 ),
-                child: Text('Crear una nueva cuenta', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87 ),),
+                child: Text('¿Ya tienes una cuenta?', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87 ),),
               ),
               SizedBox( height: 50 ),
             ],
@@ -124,7 +124,7 @@ class _LoginForm extends StatelessWidget {
                 child: Text(
                   loginForm.isLoading 
                     ? 'Espere'
-                    : 'Login',
+                    : 'Registo',
                   style: TextStyle( color: Colors.white ),
                 )
               ),
@@ -140,7 +140,7 @@ class _LoginForm extends StatelessWidget {
 
 
                 // TODO: validar si el login es correcto
-                final String? errorMessage = await authService.login(loginForm.email, loginForm.password);
+                final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
                 if (errorMessage == null ){
                   Navigator.pushReplacementNamed(context, 'home');
                 } else {
@@ -149,6 +149,7 @@ class _LoginForm extends StatelessWidget {
                   loginForm.isLoading = false;
                 } 
 
+                
               }
             )
 
